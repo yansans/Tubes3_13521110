@@ -1,0 +1,42 @@
+[
+  {
+    "question": "Apa ibukota Indonesia?",
+    "answer" : "Jakarta"   
+  },
+  {
+    "question": "Apa mata kuliah IF semester 4 yang paling seru?",
+    "answer" : "Yang paling seru adalah STIMA tentunya :D"
+  },
+  {
+    "question": "Apa ibukota Malaysia?",
+    "answer" : "Kuala Lumpur"
+  },
+  {
+    "question": "Apa ibukota Jepang?",  
+    "answer" : "Tokyo"
+  },
+  {
+    "question": "Apa ibukota China?",
+    "answer" : "Beijing"
+  },
+  {
+    "question": "Apa ibukota India?",
+    "answer" : "New Delhi"
+  },
+  {
+    "question": "Apa ibukota Amerika Serikat?",
+    "answer" : "Washington D.C."
+  },
+  {
+    "question": "Apa ibukota Inggris?",
+    "answer" : "London"
+  },
+  {
+    "question": "Apa ibukota Jerman?",
+    "answer" : "Berlin"
+  },
+  {
+    "question": "Apa ibukota Perancis?",
+    "answer" : "Paris"
+  }
+]
