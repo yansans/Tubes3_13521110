@@ -22,3 +22,7 @@ go.work
 
 # secret files
 *.txt
+.env
+
+#playground 
+playground*.js
