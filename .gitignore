@@ -26,3 +26,7 @@ go.work
 
 #playground 
 playground*.js
+
+# npm auto generated module
+node_modules/
+package-lock.json
