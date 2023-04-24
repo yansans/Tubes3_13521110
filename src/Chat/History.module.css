@@ -1,26 +1,29 @@
 .HistoryContainer {
     border-right: 1px solid #dfdfdf;
-    width: 200px;
-    background-color: blue;
+    width: 100%;
+    background-color: #202123;
 }
 .HistoryLog {
     height: 75%;
-    background-color: purple;
+    background-color: #202123;
 }
 .HistoryName {
-    background: rgb(0, 24, 111);
+    background: transparent;
     margin-bottom: 5px;
     width: 75%;
     padding: 12px;
     color: white;
     margin-left: 5px;
+    margin: 5px;
     height: 40px;
+    text-align: center;
 }
 .RadioButton {
     position: relative;
     width: 100px;
     height: 10%;
     text-align: left;
-    color: red;
+    color: white;
     zoom: 230%;
+    margin-left: 10px;
 }

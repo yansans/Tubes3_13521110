@@ -1,14 +1,15 @@
 import styles from './ChatInput.module.css'
+import submit from './img/submit.svg'
 
 const ChatInput = () => {
     return (
-        <div>
+        <div className={styles.ChatInputFull}>
             <input 
                 className={styles.ChatInputMessage}
-                placeholder='Type something'
+                placeholder='Send a message...'
             />
             <button className={styles.ChatInputButton}>
-                Submit
+                <img src={submit}></img>
             </button>
         </div>
     );

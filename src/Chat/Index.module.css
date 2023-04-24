@@ -2,18 +2,18 @@
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 4fr;
-    background-color: rebeccapurple;
     position: relative;
 }
 .ChatContainer {
-    margin-right: 5vh;
+    width: 100%;
     overflow: hidden;
     position: relative;
-    background-color: orange;
+    background-color: #343541;
 }
 .ChatInputContainer {
     width: 100%;
-    background-color: brown;
+    min-height: 80px;
+    background-color: #343541;
     position: absolute;
     bottom: 0;
     left: 0;

@@ -5,7 +5,9 @@ const History = () => {
     return (
         <div className={styles.HistoryContainer}>
             <div className={styles.HistoryLog}>
-                History
+                <button className={styles.HistoryName} style={{marginTop:"10px"}}>
+                    + New chat
+                </button>
                 {exampleHistory.map((msg, i) => (
                     <button className={styles.HistoryName} key={i}>
                         {msg}

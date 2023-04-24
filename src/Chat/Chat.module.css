@@ -1,19 +1,24 @@
 .ChatColumn {
-    padding: 10px 10px 10px 10px;
     background-color: brown;
+}
+.ChatUserIcon {
+    height: 10;
+    width: 45px;
+    background-color: transparent;
 }
 .ChatMessage, .ChatLeft, .ChatRight {
     background: rgb(0, 24, 111);
-    margin-bottom: 24px;
-    width: 75%;
+    width: 100%;
     padding: 12px;
     color: white;
 }
 .ChatLeft {
+    background-color: #444654;
     margin-right: auto;
     margin-left: 0;
 }
 .ChatRight {
+    background-color: #343541;
     margin-left: auto;
     margin-right: 0;
 }
