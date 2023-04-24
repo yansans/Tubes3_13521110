@@ -1,16 +1,16 @@
 import styles from './History.module.css'
 
-const exampleHistory = ['hehe', 'hihi', 'huhu'];
+const exampleHistory = ['contoh text overflow kaya gini !!!! !! ! ! ! !', 'hihi', 'huhu'];
 const History = () => {
     return (
         <div className={styles.HistoryContainer}>
             <div className={styles.HistoryLog}>
                 <button className={styles.HistoryName} style={{marginTop:"10px"}}>
-                    + New chat
+                    <text>+ New chat</text>
                 </button>
                 {exampleHistory.map((msg, i) => (
                     <button className={styles.HistoryName} key={i}>
-                        {msg}
+                        <text>{msg}</text>
                     </button>
                 ))}
             </div>
