@@ -1,0 +1,20 @@
+.IndexContainer {
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    background-color: rebeccapurple;
+    position: relative;
+}
+.ChatContainer {
+    margin-right: 5vh;
+    overflow: hidden;
+    position: relative;
+    background-color: orange;
+}
+.ChatInputContainer {
+    width: 100%;
+    background-color: brown;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
