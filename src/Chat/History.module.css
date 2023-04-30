@@ -6,20 +6,25 @@
 .HistoryLog {
     height: 75%;
     background-color: #202123;
+    overflow-y: auto;
 }
-.HistoryName {
+.HistoryButton {
     background: transparent;
     margin-bottom: 5px;
+    margin-top: 10px;
     width: 75%;
     padding: 12px;
     color: white;
-    margin-left: 5px;
-    margin: 5px;
     height: 40px;
-    text-align: center;
+    text-align: left;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    border-radius: 5%;
+}
+.HistoryName {
+    margin-left: 10px;
+    font-size: 15px;
 }
 .RadioButton {
     position: relative;
@@ -29,4 +34,14 @@
     color: white;
     zoom: 230%;
     margin-left: 10px;
+}
+.HistoryLog::-webkit-scrollbar {
+    width: 10px;
+}
+.HistoryLog::-webkit-scrollbar-thumb {
+    background-color: #444654;
+    border-radius: 5px;
+}   
+.HistoryLog::-webkit-scrollbar-thumb:hover {
+    background-color: white;
 }

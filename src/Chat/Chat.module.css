@@ -1,5 +1,5 @@
 .ChatColumn {
-    height: 100%;
+    height: 90%;
     overflow-y: auto;
 }
 .ChatUserIcon {
@@ -8,7 +8,7 @@
     background-color: transparent;
 }
 .ChatRow, .ChatLeft, .ChatRight {
-    width: 100%;
+    width: 95%;
     padding: 12px;
     color: white;
     word-wrap: break-word;
@@ -17,13 +17,9 @@
 }
 .ChatLeft {
     background-color: #444654;
-    margin-right: auto;
-    margin-left: 0;
 }
 .ChatRight {
     background-color: #343541;
-    margin-left: auto;
-    margin-right: 0;
 }
 .ChatMessage {
     padding-left: 30px;
