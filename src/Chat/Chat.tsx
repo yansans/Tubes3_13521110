@@ -12,7 +12,7 @@ const Chat = ({chatMessages} : ChatInterface) => {
 
     return (
         <div className={styles.ChatColumn}>
-            {chatMessages.map((msg, i) => (
+            {chatMessages && chatMessages.map((msg, i) => (
                 <div className={i%2 === 0 ? styles.ChatRight : styles.ChatLeft} key={i}>
                     <div style={{ display: 'flex'}}>
                         <img className={styles.ChatUserIcon} src={i%2 === 0 ? person : logo} alt=""></img>

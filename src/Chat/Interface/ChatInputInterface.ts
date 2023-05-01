@@ -1,6 +1,6 @@
 
 interface ChatInputInterface {
-    sendNewMessage : (message : String) => void;
+    sendNewMessage : (message : string) => void;
 }
 
 export default ChatInputInterface;

@@ -3,35 +3,57 @@ import plus from './img/plus.svg'
 import chat from './img/chat.svg'
 import rename from './img/rename.svg'
 import deleting from './img/deleting.svg'
-import { useState } from "react";
-import AlgoInputInterface from './Interface/AlgoInputInterface'
+import check from './img/check.svg'
+import HistoryState from './Interface/HistoryState'
+import AlgoOption from './AlgoOption'
+import { useState, useRef } from 'react'
 
-const exampleHistory : String[] = ['contoh text overflow kaya gini !!!! !! ! ! ! !', 'hihi', 'huhu'];
-const History = ({sendAlgoChange} : AlgoInputInterface) => {
-    const [selectedHistory, setSelectedHistory] : [Number, any] = useState(0);
-    const handleHistoryChange = (idx : Number) => {
-        setSelectedHistory(idx);
+const History = ({selectedHistory,
+                    history,
+                    sendAlgoChange,
+                    handleHistoryChange,
+                    newHistory,
+                    renameHistory,
+                    deleteHistory
+                } : HistoryState) => {
+    const renameRef = useRef<HTMLInputElement>(null);
+    const [renaming, setRenaming] : [boolean, any] = useState(false);
+    const [renameName, setRenameName] : [string, any] = useState("");
+
+    const enableRenaming = (name : string) => {
+        setRenameName(name);
+        setRenaming(true);
+    }
+
+    const renameSubmit = () => {
+        renameHistory(renameName);
+        setRenaming(false);
+    };
+
+    const enterSubmit = (event : React.KeyboardEvent<HTMLInputElement>) => {
+        if (event.key === 'Enter') {
+            renameSubmit();
+        }
+    }
+
+    const historyName = (name : string, idx : number) => {
+        return (
+            renaming && idx === selectedHistory ? (
+                <input className={styles.HistoryName}
+                    type="text"
+                    value={renameName}
+                    ref={renameRef}
+                    onChange={(event) => setRenameName(event.target.value)}
+                    onFocus={() => console.log("test")}
+                    onBlur={renameSubmit}
+                    onKeyDown={(event) => enterSubmit(event)} 
+                    />
+            ) : (
+                <label className={styles.HistoryName}>{name}</label>
+            )
+        )
     }
     
-    const [history, setHistory] : [String[], any] = useState(exampleHistory);
-    const newHistory = () => {
-        setHistory([...history, new Date().toLocaleDateString() + " " + new Date().toTimeString()]);
-    }
-
-    
-    function editHistory (idx : Number)  {
-        return idx == selectedHistory ? (
-            <a>
-                <button style={{background:"transparent", borderColor:"transparent"}}>
-                    <img src={rename} style={{zoom:"1750%"}}></img>
-                </button>
-                <button style={{background:"transparent", borderColor:"transparent"}}>
-                    <img src={deleting} style={{zoom:"1750%"}}></img>
-                </button>
-            </a>
-        ) : null;
-    }
-
     return (
         <div className={styles.HistoryContainer}>
             <div className={styles.HistoryLog}>
@@ -40,14 +62,28 @@ const History = ({sendAlgoChange} : AlgoInputInterface) => {
                     <img src={plus} style={{zoom:"1750%"}} alt="new"></img>
                     <label className={styles.HistoryName}>New chat</label>
                 </button>
-                {history.map((name, i) => (
+                {history.map((name, idx) => (
                     <button className={styles.HistoryButton} 
-                        key={i}
-                        style={i == selectedHistory ? {backgroundColor:"#40414F"} : {borderColor:"transparent"}}
-                        onClick={() => handleHistoryChange(i)}>
+                        key={idx}
+                        style={idx === selectedHistory ? {backgroundColor:"#40414F"} : {borderColor:"transparent"}}
+                        onClick={() => handleHistoryChange(idx)}>
                         <img src={chat} style={{zoom:"1750%"}} alt="history"></img>
-                        <label className={styles.HistoryName}>{name}</label>
-                        {editHistory(i)}
+                        {historyName(name, idx)}
+                        {(idx === selectedHistory) ? 
+                        <>
+                            <button className={styles.EditButton} onClick={deleteHistory}>
+                                <img src={deleting} style={{zoom:"1750%"}} alt="delete"/>
+                            </button>
+                            {renaming ? 
+                                <button className={styles.EditButton} onClick={renameSubmit}>
+                                    <img src={check} style={{zoom:"7%"}} alt="renamesubmit"/>
+                                </button> : 
+                                <button className={styles.EditButton} onClick={() => enableRenaming(name)}>
+                                    <img src={rename} style={{zoom:"1750%"}} alt="rename"/>
+                                </button>
+                            }
+                                
+                        </> : ""}
                     </button>
                 ))}
             </div>
@@ -55,22 +91,7 @@ const History = ({sendAlgoChange} : AlgoInputInterface) => {
                 color: 'black',
                 height: 1,
             }}/>
-            <div className={styles.RadioButton}> 
-                <input 
-                    type="radio"
-                    name="option" 
-                    value="KMP" 
-                    onChange={(event) => sendAlgoChange(event)}
-                    defaultChecked/>KMP
-            </div>
-            <div className={styles.RadioButton}>
-                <input 
-                    type="radio"
-                    name="option" 
-                    value="BM" 
-                    onChange={(event) => sendAlgoChange(event)}
-                    />BM
-            </div>
+            <AlgoOption sendAlgoChange={sendAlgoChange}/>
         </div>
     );
 };

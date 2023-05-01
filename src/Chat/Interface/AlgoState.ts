@@ -1,6 +1,6 @@
 
-interface AlgoInputInterface {
+interface AlgoState {
     sendAlgoChange : (event : React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default AlgoInputInterface;
+export default AlgoState;

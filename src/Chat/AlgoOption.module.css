@@ -1,0 +1,9 @@
+.RadioButton {
+    position: relative;
+    width: 100px;
+    height: 10%;
+    text-align: left;
+    color: white;
+    zoom: 230%;
+    margin-left: 10px;
+}

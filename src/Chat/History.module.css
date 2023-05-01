@@ -1,39 +1,48 @@
 .HistoryContainer {
     border-right: 1px solid #dfdfdf;
-    width: 100%;
+    width: 340px;
     background-color: #202123;
 }
 .HistoryLog {
-    height: 75%;
+    height: 75vh;
     background-color: #202123;
     overflow-y: auto;
 }
 .HistoryButton {
+    position: relative;
     background: transparent;
-    margin-bottom: 5px;
-    margin-top: 10px;
-    width: 75%;
+    margin-top: 5px;
+    width: 95%;
     padding: 12px;
     color: white;
-    height: 40px;
+    height: 50px;
     text-align: left;
+}
+.HistoryName {
+    position: absolute;
+    margin-left: 10px;
+    font-size: 15px;
+    padding-right: 10px;
+    width: 180px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-    border-radius: 5%;
-}
-.HistoryName {
-    margin-left: 10px;
-    font-size: 15px;
-}
-.RadioButton {
-    position: relative;
-    width: 100px;
-    height: 10%;
-    text-align: left;
+    background: transparent;
+    border-color: #175ed9;
     color: white;
-    zoom: 230%;
-    margin-left: 10px;
+}
+.EditButton {
+    background: transparent;
+    border-color: transparent;
+    float: right;
+}
+.HistoryButton:hover {
+    background-color: #2a2b32;
+    background: #2a2b32;
+}
+.EditButton:hover {
+    background-color: #202123;
+    background: #202123;
 }
 .HistoryLog::-webkit-scrollbar {
     width: 10px;
