@@ -31,28 +31,12 @@ func CreateChat(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
-	var participantIDs []primitive.ObjectID
-	for _, participantIDStr := range chat.Participants {
-
-		participantIDHex := participantIDStr.Hex()
-		participantID, err := primitive.ObjectIDFromHex(participantIDHex)
-
-		if err != nil {
-			return err
-		}
-		participantIDs = append(participantIDs, participantID)
-	}
-
-	if chat.Messages == nil {
-		chat.Messages = []models.Message{}
-		chat.TotalMessage = 0
-	}
-
 	newChat := models.ChatLog{
 		ID:           primitive.NewObjectID(),
-		Participants: participantIDs,
+		Participants: chat.Participants,
 		Messages:     chat.Messages,
 		TotalMessage: len(chat.Messages),
+		CreationDate: primitive.NewDateTimeFromTime(time.Now()),
 	}
 
 	result, err := chatLogColection.InsertOne(ctx, newChat)
