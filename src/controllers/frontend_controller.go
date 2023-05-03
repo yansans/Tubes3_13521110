@@ -123,7 +123,17 @@ func NewUserChat(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "status", Data: &echo.Map{"data": string(body)}})
 	}
 
-	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: nil})
+	var respID responses.UserResponse
+	if err := json.Unmarshal(body, &respID); err != nil {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "unmarshal", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	result := respID.Data
+	id := (*result)["data"]
+	mapID := id.(map[string]interface{})
+	insertedID := mapID["InsertedID"].(string)
+
+	return c.JSON(http.StatusOK, responses.ChatFrontendResponse{Status: http.StatusOK, Message: "success", Data: insertedID})
 }
 
 func DeleteUserChat(c echo.Context) error {

@@ -12,6 +12,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 var chatLogColection *mongo.Collection = configs.GetCollection(configs.DB, "chatlogs")
@@ -57,13 +58,18 @@ func GetAllChats(e echo.Context) error {
 	var chats []models.ChatLog
 	defer cancel()
 
-	cursor, err := chatLogColection.Find(ctx, bson.M{})
+	opts := options.Find().SetSort(bson.M{"creation_date": 1})
+	cursor, err := chatLogColection.Find(ctx, bson.M{}, opts)
 	if err != nil {
 		return e.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	if err = cursor.All(ctx, &chats); err != nil {
 		return e.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	if chats == nil {
+		chats = make([]models.ChatLog, 0)
 	}
 
 	return e.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": chats}})
