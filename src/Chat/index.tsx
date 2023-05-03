@@ -2,21 +2,27 @@ import ChatInput from './ChatInput';
 import Chat from './Chat'
 import History from './History';
 import styles from './Index.module.css'
-import { useState } from "react";
-
-const exampleChat : string[][] = [
-    ['Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum', 'hihi', 'huhu', 'hihi', 'huhu', 'hihi', 'huhu', 'hihi', 'huhu', 'hihi', 'huhu'],
-    ['aaaa', 'iiii', 'uuuu', 'uuuuu'],
-    ['uweeeee']];
-const exampleHistory : string[] = ['contoh text overflow kaya gini !!!! !! ! ! ! !', 'hihi', 'huhu'];
+import { useState, useEffect } from "react";
+import * as API from './API';
 
 const ChatGPT = () => {
     // Chat.tsx
-    const [chatMessages, setChatMessages] : [string[][], any] = useState(exampleChat);
+    const [chatMessages, setChatMessages] : [string[][], any] = useState([]);
     const addMessage = (message : string) => {
-        const chatCopy = [...chatMessages]
+        if(history.length <= selectedHistory) {
+            alert("No chat selected, please choose or make chat before sending a message");
+            return;
+        }
+
+        const chatCopy = [...chatMessages];
         chatCopy[selectedHistory] = [...chatCopy[selectedHistory], message];
         setChatMessages(chatCopy);
+        
+        API.sendMessage(historyID[selectedHistory], message, selectedAlgo).then((botResponse) => {
+            const chatCopy2 = [...chatCopy];
+            chatCopy2[selectedHistory] = [...chatCopy2[selectedHistory], botResponse];
+            setChatMessages(chatCopy2);
+        });
     };
 
     // History.tsx history
@@ -25,29 +31,51 @@ const ChatGPT = () => {
         setSelectedHistory(idx);
     }
     
-    const [history, setHistory] : [string[], any] = useState(exampleHistory);
+    const [historyID, setHistoryID] : [string[], any] = useState([]);
+    const [history, setHistory] : [string[], any] = useState([]);
     const newHistory = () => {
-        setHistory([new Date().toLocaleDateString() + " " + new Date().toTimeString(), ...history]);
+        const name : string = new Date().toLocaleDateString() + " " + new Date().toTimeString();
+
+        setHistory([name, ...history]);
         setChatMessages([[], ...chatMessages]);
+
+        API.newHistory(name).then((newHistoryID) => {
+            setHistoryID([newHistoryID, ...historyID]);
+        })
+
         setSelectedHistory(0);
     }
 
     const deleteHistory = () => {
+        setHistoryID([...historyID.slice(0, selectedHistory), ...historyID.slice(selectedHistory+1)]);
         setHistory([...history.slice(0, selectedHistory), ...history.slice(selectedHistory+1)]);
         setChatMessages([...chatMessages.slice(0, selectedHistory), ...chatMessages.slice(selectedHistory+1)]);
+        API.deleteHistory(historyID[selectedHistory]);
     }
 
     const renameHistory = (name : string) => {
         history[selectedHistory] = name;
+        API.renameHistory(historyID[selectedHistory], name);
     }
 
     // History.tsx algo
     const [selectedAlgo, setSelectedAlgo] : [string, any] = useState("KMP");
     const handleAlgoChange = (event : React.ChangeEvent<HTMLInputElement>) => {
-        const newVal = event.target.value
         setSelectedAlgo(event.target.value);
-        addMessage("Algorithm use : " + newVal);
     };
+
+    // API
+    useEffect(() => {
+        getChat();
+    }, []);
+
+    const getChat = () => {
+        API.getData().then((ChatInformation) => {
+            setHistoryID(ChatInformation.historyID); 
+            setHistory(ChatInformation.history); 
+            setChatMessages(ChatInformation.chat); 
+        })
+    }
 
     // main HTML element
     return (

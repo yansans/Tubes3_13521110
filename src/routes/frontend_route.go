@@ -11,5 +11,5 @@ func FrontEndRoute(e *echo.Echo) {
 	e.DELETE("/app/:id", controllers.DeleteUserChatID)
 	e.DELETE("/app", controllers.DeleteUserChat)
 	e.POST("/app/chat", controllers.AddNewUserMessage)
-	e.PUT("/app/chat", controllers.RenameUserChat)
+	e.PUT("/app", controllers.RenameUserChat)
 }

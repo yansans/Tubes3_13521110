@@ -323,5 +323,5 @@ func AddNewUserMessage(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "bot status", Data: &echo.Map{"data": string(body)}})
 	}
 
-	return c.JSON(http.StatusOK, responses.ChatFrontendResponse{Status: http.StatusOK, Message: "success", Data: responsesString})
+	return c.JSON(http.StatusOK, responses.ChatFrontendResponse{Status: http.StatusOK, Message: "success", Data: botMessage.Message})
 }
