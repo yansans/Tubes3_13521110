@@ -17,5 +17,7 @@ func main() {
 	routes.QueryRoute(e)
 	routes.ChatLogRoute(e)
 
+	routes.FrontEndRoute(e)
+
 	e.Logger.Fatal(e.Start("localhost:6969"))
 }
