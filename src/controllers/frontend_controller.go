@@ -245,7 +245,9 @@ func AddNewUserMessage(c echo.Context) error {
 
 	// fungsi respon disini
 	responsesString := message.Message
+	algo := message.Algorithm
 	println(responsesString)
+	println(algo)
 
 	var botMessage models.NewUserMessage
 	botMessage.Sender = "bot"

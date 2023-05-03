@@ -25,7 +25,8 @@ type EditChat struct {
 }
 
 type NewUserMessage struct {
-	ChatID  string `json:"chat_id" validate:"required"`
-	Message string `json:"message" validate:"required"`
-	Sender  string `json:"sender"`
+	ChatID    string `json:"chat_id" validate:"required"`
+	Message   string `json:"message" validate:"required"`
+	Sender    string `json:"sender"`
+	Algorithm string `json:"algorithm"`
 }
