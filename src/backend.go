@@ -10,6 +10,7 @@ import (
 func main() {
 	e := echo.New()
 	e.Use(middleware.CORS())
+	e.Use(routes.MutexMiddleware)
 
 	configs.ConnectDB()
 
