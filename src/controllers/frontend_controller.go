@@ -14,8 +14,10 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+var host = "http://" + "localhost" + ":6969"
+
 func GetUserChats(c echo.Context) error {
-	resp, err := http.Get("http://localhost:6969/chat")
+	resp, err := http.Get(host + "/chat")
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "get", Data: &echo.Map{"data": err.Error()}})
 	}
@@ -97,7 +99,7 @@ func NewUserChat(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "marshal", Data: &echo.Map{"data": err.Error()}})
 	}
 
-	url := "http://localhost:6969/chat"
+	url := host + "/chat"
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewBuffer(chatData))
 	if err != nil {
@@ -136,7 +138,39 @@ func DeleteUserChat(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
-	url := "http://localhost:6969/chat/" + chat.ChatID
+	url := host + "/chat/" + chat.ChatID
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "new request", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "client", Data: &echo.Map{"data": err.Error()}})
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "read all", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "status", Data: &echo.Map{"data": string(body)}})
+	}
+
+	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: nil})
+}
+
+func DeleteUserChatID(c echo.Context) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	defer cancel()
+
+	chatIDHex := c.Param("id")
+
+	url := host + "/chat/" + chatIDHex
+
 	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, nil)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "new request", Data: &echo.Map{"data": err.Error()}})
@@ -172,7 +206,7 @@ func RenameUserChat(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
-	url := "http://localhost:6969/chat/" + chat.ChatID
+	url := host + "/chat/" + chat.ChatID
 	chatData, err := json.Marshal(chat)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "marshal", Data: &echo.Map{"data": err.Error()}})
@@ -215,7 +249,7 @@ func AddNewUserMessage(c echo.Context) error {
 	}
 
 	message.Sender = "user"
-	url := "http://localhost:6969/chat/" + message.ChatID
+	url := host + "/chat/" + message.ChatID
 	messageData, err := json.Marshal(message)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "marshal", Data: &echo.Map{"data": err.Error()}})
