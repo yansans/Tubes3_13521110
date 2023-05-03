@@ -31,9 +31,14 @@ func CreateChat(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
+	if chat.Messages == nil {
+		chat.Messages = make([]models.Message, 0)
+	}
+
 	newChat := models.ChatLog{
 		ID:           primitive.NewObjectID(),
-		Participants: chat.Participants,
+		ChatName:     chat.ChatName,
+		Participants: "user",
 		Messages:     chat.Messages,
 		TotalMessage: len(chat.Messages),
 		CreationDate: primitive.NewDateTimeFromTime(time.Now()),
@@ -91,15 +96,15 @@ func SendMessage(c echo.Context) error {
 	chatID, err := primitive.ObjectIDFromHex(chatIDHex)
 
 	if err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "convert", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	if err := c.Bind(&chat); err != nil {
-		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "bind", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	if validationErr := validate.Struct(&chat); validationErr != nil {
-		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: &echo.Map{"data": validationErr.Error()}})
+		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "validate", Data: &echo.Map{"data": validationErr.Error()}})
 	}
 
 	chat.ID = primitive.NewObjectID()
@@ -108,11 +113,11 @@ func SendMessage(c echo.Context) error {
 	result, err := chatLogColection.UpdateOne(ctx, bson.M{"_id": chatID}, bson.M{"$push": bson.M{"messages": chat}, "$inc": bson.M{"total_message": 1}})
 
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: &echo.Map{"data": err.Error()}})
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "update", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	if result.ModifiedCount == 0 {
-		return c.JSON(http.StatusNotFound, responses.UserResponse{Status: http.StatusNotFound, Message: "error", Data: &echo.Map{"data": "chat not found"}})
+		return c.JSON(http.StatusNotFound, responses.UserResponse{Status: http.StatusNotFound, Message: "not found", Data: &echo.Map{"data": "chat not found"}})
 	}
 
 	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": result}})
@@ -126,7 +131,7 @@ func DeleteChat(e echo.Context) error {
 	chatID, err := primitive.ObjectIDFromHex(chatIDHex)
 
 	if err != nil {
-		return err
+		return e.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "convert", Data: &echo.Map{"data": err.Error()}})
 	}
 
 	result, err := chatLogColection.DeleteOne(ctx, bson.M{"_id": chatID})
@@ -140,4 +145,40 @@ func DeleteChat(e echo.Context) error {
 	}
 
 	return e.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": result}})
+}
+
+func RenameChat(c echo.Context) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	chatIDHex := c.Param("id")
+	chatID, err := primitive.ObjectIDFromHex(chatIDHex)
+
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "convert", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	var chat models.ChatLog
+	if err := c.Bind(&chat); err != nil {
+		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "bind", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	if validationErr := validate.Struct(&chat); validationErr != nil {
+		return c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "validate", Data: &echo.Map{"data": validationErr.Error()}})
+	}
+
+	filter := bson.M{"_id": chatID}
+	update := bson.M{"$set": bson.M{"chat_name": chat.ChatName}}
+
+	result, err := chatLogColection.UpdateOne(ctx, filter, update)
+
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "update", Data: &echo.Map{"data": err.Error()}})
+	}
+
+	if result.ModifiedCount == 0 {
+		return c.JSON(http.StatusNotFound, responses.UserResponse{Status: http.StatusNotFound, Message: "not found", Data: &echo.Map{"data": "chat not found"}})
+	}
+
+	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": result}})
 }

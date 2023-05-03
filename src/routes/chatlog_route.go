@@ -11,4 +11,5 @@ func ChatLogRoute(e *echo.Echo) {
 	e.GET("/chat/:id", controllers.GetChat)
 	e.POST("/chat/:id", controllers.SendMessage)
 	e.DELETE("/chat/:id", controllers.DeleteChat)
+	e.PUT("/chat/:id", controllers.RenameChat)
 }

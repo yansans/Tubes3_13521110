@@ -4,7 +4,7 @@ import "go.mongodb.org/mongo-driver/bson/primitive"
 
 type ChatLog struct {
 	ID           primitive.ObjectID `bson:"_id,omitempty" json:"id"`
-	ChatName     string             `bson:"chat_name" json:"chat_name" validate:"required"`
+	ChatName     string             `bson:"chat_name" json:"chat_name"`
 	Participants string             `bson:"participants" json:"participants"`
 	Messages     []Message          `bson:"messages" json:"messages"`
 	TotalMessage int                `bson:"total_message" json:"total_message"`
