@@ -146,7 +146,7 @@ func operate(op1 float64, op2 float64, operator string) float64 {
 	}
 }
 
-func calculator(expression string) string {
+func Calculator(expression string) string {
 	postfix := infixToPostfix(expression)
 	stack := Stack{}
 	var op1, op2, temp float64
@@ -172,7 +172,7 @@ func calculator(expression string) string {
 	}
 }
 
-func calculatorDriver() {
+func CalculatorDriver() {
 	fmt.Println("Infix to Postfix-Test:")
 	infix := "a+b*(c^d-e)^(f+g*h)-i"
 	postfix := infixToPostfix(infix)
@@ -193,13 +193,13 @@ func calculatorDriver() {
 	expression5 := "a+b*(c^d-e)^(f+g*h)-i"                                 // Invalid (Should be numbers)
 	expression6 := "4 + 5 * ( 2 - 7..021 ))"                               // Invalid
 	expression7 := "(((12 + 7) / 3) * (8 - 4)) + (10 ^ 3) - ((5 * 2) / 4)" // 1022.8333...
-	result1 := calculator(expression1)
-	result2 := calculator(expression2)
-	result3 := calculator(expression3)
-	result4 := calculator(expression4)
-	result5 := calculator(expression5)
-	result6 := calculator(expression6)
-	result7 := calculator(expression7)
+	result1 := Calculator(expression1)
+	result2 := Calculator(expression2)
+	result3 := Calculator(expression3)
+	result4 := Calculator(expression4)
+	result5 := Calculator(expression5)
+	result6 := Calculator(expression6)
+	result7 := Calculator(expression7)
 	fmt.Println(result1)
 	fmt.Println(result2)
 	fmt.Println(result3)

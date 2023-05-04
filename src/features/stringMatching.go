@@ -22,7 +22,7 @@ func generateLPS(pattern string) []int {
 	return lps
 }
 
-func kmp(pattern string, text string) []int {
+func Kmp(pattern string, text string) []int {
 	// Main KMP Algorithm
 	lps := generateLPS(pattern)
 	i := 0
@@ -76,7 +76,7 @@ func bmMatchPattern(pattern string, text string, k *int) bool {
 	return true
 }
 
-func boyerMoore(pattern string, text string) []int {
+func BoyerMoore(pattern string, text string) []int {
 	// Main Boyer-Moore Algorithm
 	bmt := generateBMT(pattern)
 	i := len(pattern) - 1
@@ -148,7 +148,7 @@ func levenstheinDistance(pattern string, text string) int {
 	return dp[m][n]
 }
 
-func calculateSimilarity(pattern string, text string) float64 {
+func CalculateSimilarity(pattern string, text string) float64 {
 	if len(pattern) >= len(text) {
 		return (1 - float64(levenstheinDistance(pattern, text))/float64(len(pattern))) * 100
 	} else {
@@ -157,7 +157,7 @@ func calculateSimilarity(pattern string, text string) float64 {
 }
 
 // Driver
-func stringMatchingDriver() {
+func StringMatchingDriver() {
 	var hello string = "hello, World!"
 	lps := make([]int, len(hello))
 	fmt.Println(hello[12:13])
@@ -173,17 +173,17 @@ func stringMatchingDriver() {
 	fmt.Println()
 
 	fmt.Println("KMP-test:")
-	fmt.Println(kmp("ababd", "ababcabcabababd"))
-	fmt.Println(kmp("aaab", "aaaaaaab"))
-	fmt.Println(kmp("BAB", "ABABABAC"))
-	fmt.Println(kmp("TEST", "THIS IS A TEST"))
+	fmt.Println(Kmp("ababd", "ababcabcabababd"))
+	fmt.Println(Kmp("aaab", "aaaaaaab"))
+	fmt.Println(Kmp("BAB", "ABABABAC"))
+	fmt.Println(Kmp("TEST", "THIS IS A TEST"))
 	fmt.Println()
 
 	fmt.Println("BM-test:")
-	fmt.Println(boyerMoore("ababd", "ababcabcabababd"))
-	fmt.Println(boyerMoore("aaab", "aaaaaaab"))
-	fmt.Println(boyerMoore("BAB", "ABABABAC"))
-	fmt.Println(boyerMoore("TEST", "THIS IS A TEST"))
+	fmt.Println(BoyerMoore("ababd", "ababcabcabababd"))
+	fmt.Println(BoyerMoore("aaab", "aaaaaaab"))
+	fmt.Println(BoyerMoore("BAB", "ABABABAC"))
+	fmt.Println(BoyerMoore("TEST", "THIS IS A TEST"))
 	fmt.Println()
 
 	fmt.Println("Levensthein Distance-test:")
@@ -206,13 +206,13 @@ func stringMatchingDriver() {
 	fmt.Println()
 
 	fmt.Println("Similarity-test:")
-	simil1 := calculateSimilarity(s1, t1)
+	simil1 := CalculateSimilarity(s1, t1)
 	fmt.Printf("Similarity between %q and %q is %f.\n", s1, t1, simil1)
-	simil2 := calculateSimilarity(s2, t2)
+	simil2 := CalculateSimilarity(s2, t2)
 	fmt.Printf("Similarity between %q and %q is %f.\n", s2, t2, simil2)
-	simil3 := calculateSimilarity(s3, t3)
+	simil3 := CalculateSimilarity(s3, t3)
 	fmt.Printf("Similarity between %q and %q is %f.\n", s3, t3, simil3)
-	simil4 := calculateSimilarity(s4, t4)
+	simil4 := CalculateSimilarity(s4, t4)
 	fmt.Printf("Similarity between %q and %q is %f.\n", s4, t4, simil4)
 	fmt.Println()
 }
