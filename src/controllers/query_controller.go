@@ -156,3 +156,53 @@ func GetAnswer(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: &echo.Map{"data": query.Answer}})
 }
+
+func GetQuestionList() []string {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var questions []string
+
+	results, err := queryCollection.Find(ctx, bson.M{})
+
+	if err != nil {
+		return nil
+	}
+
+	defer results.Close(ctx)
+	for results.Next(ctx) {
+		var singleQuery models.Query
+		if err = results.Decode(&singleQuery); err != nil {
+			return nil
+		}
+
+		questions = append(questions, singleQuery.Question)
+	}
+
+	return questions
+}
+
+func GetQuestionMap() map[string]string {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	questions := make(map[string]string)
+
+	results, err := queryCollection.Find(ctx, bson.M{})
+
+	if err != nil {
+		return nil
+	}
+
+	defer results.Close(ctx)
+	for results.Next(ctx) {
+		var singleQuery models.Query
+		if err = results.Decode(&singleQuery); err != nil {
+			return nil
+		}
+
+		questions[singleQuery.Question] = singleQuery.Answer
+	}
+
+	return questions
+}
