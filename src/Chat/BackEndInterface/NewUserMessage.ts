@@ -2,7 +2,7 @@
 interface NewUserMessage {
     chat_id : string;
     message : string;
-    sender ?: Date;
+    sender ?: string;
     algorithm : string;
 }
 

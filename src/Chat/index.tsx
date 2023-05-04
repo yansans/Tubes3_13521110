@@ -8,12 +8,19 @@ import * as API from './API';
 const ChatGPT = () => {
     // Chat.tsx
     const [chatMessages, setChatMessages] : [string[][], any] = useState([]);
+    const [chatMutex, setChatMutex] : [boolean, any] = useState(false);
     const addMessage = (message : string) => {
         if(history.length <= selectedHistory) {
             alert("No chat selected, please choose or make chat before sending a message");
             return;
         }
 
+        if(chatMutex) {
+            alert("Please wait for bot to respond before send new message");
+            return;
+        }
+
+        setChatMutex(true);
         const chatCopy = [...chatMessages];
         chatCopy[selectedHistory] = [...chatCopy[selectedHistory], message];
         setChatMessages(chatCopy);
@@ -22,6 +29,7 @@ const ChatGPT = () => {
             const chatCopy2 = [...chatCopy];
             chatCopy2[selectedHistory] = [...chatCopy2[selectedHistory], botResponse];
             setChatMessages(chatCopy2);
+            setChatMutex(false);
         });
     };
 
