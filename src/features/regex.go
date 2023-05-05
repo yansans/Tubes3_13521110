@@ -12,8 +12,8 @@ var pattern2a string = "^hitung\\s*(.*)"
 var pattern3 string = "^(?:hari apa )?((0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{1,})$"
 
 // var pattern3 string = "(\\d{0,2}/\\d{0,2}/\\d{1,})"
-var pattern4 string = ".*tambahkan\\s+pertanyaan\\s+(.+)\\s+dengan\\s+jawaban\\s+(.+)"
-var pattern5 string = ".*hapus\\s+pertanyaan\\s+(.+)"
+var pattern4 string = ".*tambahkan\\s+pertanyaan\\s+(.+)\\s+dengan\\s+jawaban\\s+(.+)$"
+var pattern5 string = ".*hapus\\s+pertanyaan\\s+(.+)$"
 
 var MultipleQueries string = "^.*\\s+(dan|,|\\?)+?\\s+.*(?:dan|,|\\s+|\\?)*?.*$"
 
@@ -75,8 +75,8 @@ func ExtractExpressionFour(question string) [2]string {
 
 	match := regex4.FindStringSubmatch(question)
 	if len(match) > 1 {
-		extracted[0] = match[1]
-		extracted[1] = match[2]
+		extracted[0] = strings.TrimSpace(match[1])
+		extracted[1] = strings.TrimSpace(match[2])
 	}
 	return extracted
 }
@@ -92,26 +92,26 @@ func ExtractExpression(question string) string {
 	if feature == 2 {
 		match := regex2a.FindStringSubmatch(question)
 		if len(match) > 1 {
-			return match[1]
+			return strings.TrimSpace(match[1])
 		} else {
 			return "Could not extract text"
 		}
 	} else if feature == 3 {
 		match := regex3.FindStringSubmatch(question)
 		if len(match) > 1 {
-			return match[1]
+			return strings.TrimSpace(match[1])
 		} else {
 			return "Could not extract text"
 		}
 	} else if feature == 5 {
 		match := regex5.FindStringSubmatch(question)
 		if len(match) > 1 {
-			return match[1]
+			return strings.TrimSpace(match[1])
 		} else {
 			return "Could not extract text"
 		}
 	} else {
-		return question
+		return strings.TrimSpace(question)
 	}
 }
 

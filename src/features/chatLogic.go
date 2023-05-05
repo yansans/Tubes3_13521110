@@ -55,6 +55,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 	resultSimilarity := make([]int, 0)
 	// Check if there is an exact match of the pattern in the database
 	for k := range data {
+		// println(CalculateSimilarity(pattern, k))
 		if checkExactPattern(pattern, k, stringMatchingAlgo) {
 			// fmt.Println("Masuk exact")
 			result = append(result, k)
@@ -106,8 +107,14 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 	if feature == 4 {
 		extractedPattern = append(extractedPattern, ExtractExpressionFour(question)[0])
 		extractedPattern = append(extractedPattern, ExtractExpressionFour(question)[1])
+		// for i := 0; i < len(extractedPattern); i++ {
+		// 	println(i, extractedPattern[i])
+		// }
 	} else {
 		extractedPattern = append(extractedPattern, ExtractExpression(question))
+		// for i := 0; i < len(extractedPattern); i++ {
+		// 	println(i, extractedPattern[i])
+		// }
 	}
 
 	if feature == 1 {
@@ -160,7 +167,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 		found := false
 		for k := range data {
 			if checkExactPattern(extractedPattern[0], k, stringMatchingAlgo) {
-				answer.WriteString("Pertanyaan sudah ada di database\n")
+				answer.WriteString("Pertanyaan ada di database\n")
 				answer.WriteString("Pertanyaan dihapus dari database")
 				found = true
 				break
@@ -169,6 +176,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 		if found {
 			var question models.Query
 			question.Question = extractedPattern[0]
+			// println(question.Question)
 			deleteQuestion(question)
 		} else {
 			answer.WriteString("Pertanyaan tidak ada di database")
