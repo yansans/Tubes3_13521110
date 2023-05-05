@@ -87,6 +87,17 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 	return result, true
 }
 
+func GetAnswer(questions string, data map[string]string, stringMatchAlgo string) string {
+	var answers strings.Builder
+	question := GetQueries(questions)
+	for i := 0; i < len(question); i++ {
+		// println(i, question[i])
+		answers.WriteString(ChatLogic(strings.TrimSpace(question[i]), data, stringMatchAlgo))
+		answers.WriteString("\n")
+	}
+	return answers.String()
+}
+
 func ChatLogic(question string, data map[string]string, stringMatchingAlgo string) string {
 	var answer strings.Builder
 	extractedPattern := make([]string, 0)
