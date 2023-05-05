@@ -50,22 +50,32 @@ func checkExactPattern(pattern string, text string, stringMatchingAlgo string) b
 	}
 }
 
-func stringMatchingLogic(pattern string, data map[string]string, stringMatchingAlgo string) []string {
+func stringMatchingLogic(pattern string, data map[string]string, stringMatchingAlgo string) ([]string, bool) {
 	result := make([]string, 0)
 	resultSimilarity := make([]int, 0)
-	for k := range data { // Check if there is an exact match of the pattern in the database
+	// Check if there is an exact match of the pattern in the database
+	for k := range data {
 		if checkExactPattern(pattern, k, stringMatchingAlgo) {
 			fmt.Println("Masuk exact")
 			result = append(result, k)
-			return result
+			resultSimilarity = append(resultSimilarity, int(CalculateSimilarity(pattern, k)))
 		}
 	}
-	for k := range data { // Check if there is a similiar pattern (similarity >= 90%) in the database
+	if len(result) > 0 {
+		sortSimilarity(&result, &resultSimilarity)
+		return result, false
+	}
+	// Check if there is a similiar pattern (similarity >= 90%) in the database
+	for k := range data {
 		if CalculateSimilarity(pattern, k) >= 90 {
 			fmt.Println("Masuk 90")
 			result = append(result, k)
-			return result
+			resultSimilarity = append(resultSimilarity, int(CalculateSimilarity(pattern, k)))
 		}
+	}
+	if len(result) > 0 {
+		sortSimilarity(&result, &resultSimilarity)
+		return result, false
 	}
 	// If there is nothing else, pick 3 questions with the highest similarity
 	fmt.Println("Masuk tidak ditemukan")
@@ -74,7 +84,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 		resultSimilarity = append(resultSimilarity, int(CalculateSimilarity(pattern, k)))
 	}
 	sortSimilarity(&result, &resultSimilarity)
-	return result
+	return result, true
 }
 
 func ChatLogic(question string, data map[string]string, stringMatchingAlgo string) string {
@@ -90,8 +100,8 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 	}
 
 	if feature == 1 {
-		matchedString := stringMatchingLogic(question, data, stringMatchingAlgo)
-		if len(matchedString) > 1 {
+		matchedString, notFound := stringMatchingLogic(question, data, stringMatchingAlgo)
+		if !notFound {
 			answer.WriteString("Pertanyaan tidak ditemukan di database. Apakah maksud Anda:\n")
 			for i := 0; i < len(matchedString); i++ {
 				if i == 3 {
