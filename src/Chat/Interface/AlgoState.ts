@@ -1,6 +1,7 @@
 
 interface AlgoState {
-    sendAlgoChange : (event : React.ChangeEvent<HTMLInputElement>) => void;
+    sendAlgoOptionChange : (event : React.ChangeEvent<HTMLInputElement>) => void;
+    sendAlgoExactChange : (isExact : boolean) => void;
 }
 
 export default AlgoState;

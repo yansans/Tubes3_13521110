@@ -10,7 +10,8 @@ import { useState, useRef } from 'react'
 
 const History = ({selectedHistory,
                     history,
-                    sendAlgoChange,
+                    sendAlgoOptionChange,
+                    sendAlgoExactChange,
                     handleHistoryChange,
                     newHistory,
                     renameHistory,
@@ -91,7 +92,10 @@ const History = ({selectedHistory,
                 color: 'black',
                 height: 1,
             }}/>
-            <AlgoOption sendAlgoChange={sendAlgoChange}/>
+            <AlgoOption
+                sendAlgoOptionChange={sendAlgoOptionChange}
+                sendAlgoExactChange={sendAlgoExactChange}
+                />
         </div>
     );
 };
