@@ -136,7 +136,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 		found := false
 		for k := range data {
 			if checkExactPattern(extractedPattern[0], k, stringMatchingAlgo) {
-				answer.WriteString("Pertanyaan ada di database")
+				answer.WriteString("Pertanyaan ada di database\n")
 				answer.WriteString("Pertanyaan dihapus dari database")
 				found = true
 				break
