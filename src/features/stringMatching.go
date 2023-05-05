@@ -22,6 +22,29 @@ func generateLPS(pattern string) []int {
 	return lps
 }
 
+func KmpExact(pattern string, text string) bool {
+	if len(pattern) == 0 {
+		return false
+	}
+	// Main KMP Exact Algorithm
+	i := 0
+	j := 0
+
+	for i < len(text)-1 {
+		if pattern[j] == text[i] {
+			i++
+			j++
+		} else {
+			return false
+		}
+
+		if j == len(pattern)-1 && i == len(text)-1 {
+			return true
+		}
+	}
+	return false
+}
+
 func Kmp(pattern string, text string) []int {
 	empty := make([]int, 0)
 	if len(pattern) == 0 {
@@ -199,6 +222,12 @@ func StringMatchingDriver() {
 	// fmt.Println(BoyerMoore("TEST", "THIS IS A TEST"))
 	// fmt.Println(BoyerMoore("something", "Apa ibukota Indonesia?"))
 	// fmt.Println()
+
+	fmt.Println("KMP Exact-test:")
+	fmt.Println(KmpExact("ababd", "ababcabcabababd"))
+	fmt.Println(KmpExact("Apa ibukota Indonesia?", "Apa ibukota Indonesia?"))
+	fmt.Println(KmpExact("Apa ibukota Indonesia", "Apa ibukota Indonesia?"))
+	fmt.Println()
 
 	fmt.Println("Levensthein Distance-test:")
 	s1 := "a"
