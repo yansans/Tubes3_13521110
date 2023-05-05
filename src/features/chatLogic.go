@@ -41,13 +41,18 @@ func checkExactPattern(pattern string, text string, stringMatchingAlgo string) b
 		} else {
 			return false
 		}
-	} else {
+	} else if stringMatchingAlgo == "kmp" {
 		if len(Kmp(pattern, text)) > 0 {
 			return true
 		} else {
 			return false
 		}
+	} else if stringMatchingAlgo == "bmexact" {
+		return BoyerMooreExact(pattern, text)
+	} else if stringMatchingAlgo == "kmpexact" {
+		return KmpExact(pattern, text)
 	}
+	return false
 }
 
 func stringMatchingLogic(pattern string, data map[string]string, stringMatchingAlgo string) ([]string, bool) {
