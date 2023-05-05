@@ -103,6 +103,33 @@ func bmMatchPattern(pattern string, text string, k *int) bool {
 	return true
 }
 
+func BoyerMooreExact(pattern string, text string) bool {
+	if len(pattern) != len(text) {
+		return false
+	}
+	if len(pattern) == 0 {
+		return false
+	}
+	// Main Boyer-Moore Algorithm
+	i := len(pattern) - 1
+	j := len(pattern) - 1
+	k := -1
+
+	for i < len(text) {
+		k = i
+		if text[k] == pattern[j] {
+			if bmMatchPattern(pattern, text, &k) {
+				return true
+			} else {
+				return false
+			}
+		} else {
+			return false
+		}
+	}
+	return false
+}
+
 func BoyerMoore(pattern string, text string) []int {
 	empty := make([]int, 0)
 	if len(pattern) == 0 {
@@ -215,7 +242,7 @@ func StringMatchingDriver() {
 	// fmt.Println(Kmp("ibu", "Apa ibukota Indonesia?"))
 	// fmt.Println()
 
-	// // fmt.Println("BM-test:")
+	// fmt.Println("BM-test:")
 	// fmt.Println(BoyerMoore("ababd", "ababcabcabababd"))
 	// fmt.Println(BoyerMoore("", "aaaaaaab"))
 	// fmt.Println(BoyerMoore("ACC", "ABABABAC"))
@@ -224,6 +251,12 @@ func StringMatchingDriver() {
 	// fmt.Println()
 
 	fmt.Println("KMP Exact-test:")
+	fmt.Println(KmpExact("ababd", "ababcabcabababd"))
+	fmt.Println(KmpExact("Apa ibukota Indonesia?", "Apa ibukota Indonesia?"))
+	fmt.Println(KmpExact("Apa ibukota Indonesia", "Apa ibukota Indonesia?"))
+	fmt.Println()
+
+	fmt.Println("BM Exact-test:")
 	fmt.Println(KmpExact("ababd", "ababcabcabababd"))
 	fmt.Println(KmpExact("Apa ibukota Indonesia?", "Apa ibukota Indonesia?"))
 	fmt.Println(KmpExact("Apa ibukota Indonesia", "Apa ibukota Indonesia?"))
