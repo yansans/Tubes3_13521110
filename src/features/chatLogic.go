@@ -34,22 +34,22 @@ func sortSimilarity(result *[]string, resultSimilarity *[]int) {
 }
 
 func checkExactPattern(pattern string, text string, stringMatchingAlgo string) bool {
-	if stringMatchingAlgo == "bm" {
+	if stringMatchingAlgo == "BM" {
 		// fmt.Println("Masuk bm")
 		if len(BoyerMoore(pattern, text)) > 0 {
 			return true
 		} else {
 			return false
 		}
-	} else if stringMatchingAlgo == "kmp" {
+	} else if stringMatchingAlgo == "KMP" {
 		if len(Kmp(pattern, text)) > 0 {
 			return true
 		} else {
 			return false
 		}
-	} else if stringMatchingAlgo == "bmexact" {
+	} else if stringMatchingAlgo == "BMEXACT" {
 		return BoyerMooreExact(pattern, text)
-	} else if stringMatchingAlgo == "kmpexact" {
+	} else if stringMatchingAlgo == "KMPEXACT" {
 		return KmpExact(pattern, text)
 	}
 	return false
