@@ -8,7 +8,9 @@ import (
 var pattern2a string = "^hitung\\s*(.*)"
 
 // pattern2b := "\\s*([\\(\\)\\d]+)\\s*([\\+\\-\\*/^]\\s*[\\(\\)\\d]+\\s*)*"
-var pattern3 string = "(\\d{0,2}/\\d{0,2}/\\d{1,})"
+var pattern3 string = "^(?:hari apa )?((0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{1,})$"
+
+// var pattern3 string = "(\\d{0,2}/\\d{0,2}/\\d{1,})"
 var pattern4 string = ".*tambahkan\\s+pertanyaan\\s+(.+)\\s+dengan\\s+jawaban\\s+(.+)"
 var pattern5 string = ".*hapus\\s+pertanyaan\\s+(.+)"
 

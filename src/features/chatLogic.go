@@ -107,7 +107,10 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 			return data[matchedString[0]]
 		}
 	} else if feature == 2 {
-		answer.WriteString("Hasilnya adalah ")
+		result := Calculator(extractedPattern[0])
+		if result != "Sintaks persamaan tidak sesuai" {
+			answer.WriteString("Hasilnya adalah ")
+		}
 		answer.WriteString(Calculator(extractedPattern[0]))
 	} else if feature == 3 {
 		answer.WriteString("Hari ")
