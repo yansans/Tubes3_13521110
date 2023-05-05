@@ -30,16 +30,20 @@ func KmpExact(pattern string, text string) bool {
 	i := 0
 	j := 0
 
-	for i < len(text)-1 {
+	for i <= len(text) {
+		if j == len(pattern) {
+			if i == len(text) {
+				return true
+			} else {
+				return false
+			}
+		}
+
 		if pattern[j] == text[i] {
 			i++
 			j++
 		} else {
-			return false
-		}
-
-		if j == len(pattern)-1 && i == len(text)-1 {
-			return true
+			break
 		}
 	}
 	return false
@@ -251,15 +255,17 @@ func StringMatchingDriver() {
 	// fmt.Println()
 
 	fmt.Println("KMP Exact-test:")
-	fmt.Println(KmpExact("ababd", "ababcabcabababd"))
+	fmt.Println(KmpExact("a", "a"))
+	fmt.Println(KmpExact("a", "ababcabcabababd"))
 	fmt.Println(KmpExact("Apa ibukota Indonesia?", "Apa ibukota Indonesia?"))
 	fmt.Println(KmpExact("Apa ibukota Indonesia", "Apa ibukota Indonesia?"))
+	fmt.Println(KmpExact("abc", "abc"))
 	fmt.Println()
 
 	fmt.Println("BM Exact-test:")
-	fmt.Println(KmpExact("ababd", "ababcabcabababd"))
-	fmt.Println(KmpExact("Apa ibukota Indonesia?", "Apa ibukota Indonesia?"))
-	fmt.Println(KmpExact("Apa ibukota Indonesia", "Apa ibukota Indonesia?"))
+	fmt.Println(BoyerMooreExact("ababd", "ababcabcabababd"))
+	fmt.Println(BoyerMooreExact("Apa ibukota Indonesia?", "Apa ibukota Indonesia?"))
+	fmt.Println(BoyerMooreExact("Apa ibukota Indonesia", "Apa ibukota Indonesia?"))
 	fmt.Println()
 
 	fmt.Println("Levensthein Distance-test:")
