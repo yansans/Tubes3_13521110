@@ -20,9 +20,15 @@ func parseDate(date string) [3]int {
 			intDate[j] = num
 			j++
 			tempString.Reset()
+			continue
 		}
 		tempString.WriteByte(date[i])
 	}
+	num, err := strconv.Atoi(tempString.String())
+	if err != nil {
+		return intDate
+	}
+	intDate[j] = num
 
 	return intDate
 }
