@@ -3,47 +3,26 @@ package features
 import (
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 func parseDate(date string) [3]int {
+	var tempString strings.Builder
 	intDate := [3]int{5, 5, 2023}
 	// Parse day
-	if date[0] == '0' {
-		num, err := strconv.Atoi(date[1:2])
-		if err != nil {
-			return intDate
+	j := 0
+	for i := 0; i < len(date); i++ {
+		if date[i] == '/' {
+			num, err := strconv.Atoi(tempString.String())
+			if err != nil {
+				return intDate
+			}
+			intDate[j] = num
+			j++
+			tempString.Reset()
 		}
-		intDate[0] = num
-	} else {
-		num, err := strconv.Atoi(date[0:2])
-		if err != nil {
-			return intDate
-		}
-		intDate[0] = num
+		tempString.WriteByte(date[i])
 	}
-
-	// Parse month
-	if date[1] == '0' {
-		num, err := strconv.Atoi(date[4:5])
-		if err != nil {
-			return intDate
-		}
-		intDate[1] = num
-	} else {
-		num, err := strconv.Atoi(date[3:5])
-		if err != nil {
-			return intDate
-		}
-		intDate[1] = num
-	}
-
-	dateLength := len(date)
-	// Parse year
-	num, err := strconv.Atoi(date[6:dateLength])
-	if err != nil {
-		return intDate
-	}
-	intDate[2] = num
 
 	return intDate
 }
