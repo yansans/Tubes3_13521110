@@ -15,7 +15,7 @@ var pattern3 string = "^(?:hari apa )?((0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2]
 var pattern4 string = ".*tambahkan\\s+pertanyaan\\s+(.+)\\s+dengan\\s+jawaban\\s+(.+)"
 var pattern5 string = ".*hapus\\s+pertanyaan\\s+(.+)"
 
-var MultipleQueries string = "^.*\\s+(dan|,|\\?)*?\\s+.*(?:dan|,|\\s+|\\?)*?.*$"
+var MultipleQueries string = "^.*\\s+(dan|,|\\?)+?\\s+.*(?:dan|,|\\s+|\\?)*?.*$"
 
 func WhichFeature(question string) int {
 	regex2a := regexp.MustCompile(pattern2a)
