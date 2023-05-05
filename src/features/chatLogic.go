@@ -35,7 +35,7 @@ func sortSimilarity(result *[]string, resultSimilarity *[]int) {
 
 func checkExactPattern(pattern string, text string, stringMatchingAlgo string) bool {
 	if stringMatchingAlgo == "bm" {
-		fmt.Println("Masuk bm")
+		// fmt.Println("Masuk bm")
 		if len(BoyerMoore(pattern, text)) > 0 {
 			return true
 		} else {
@@ -56,7 +56,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 	// Check if there is an exact match of the pattern in the database
 	for k := range data {
 		if checkExactPattern(pattern, k, stringMatchingAlgo) {
-			fmt.Println("Masuk exact")
+			// fmt.Println("Masuk exact")
 			result = append(result, k)
 			resultSimilarity = append(resultSimilarity, int(CalculateSimilarity(pattern, k)))
 		}
@@ -68,7 +68,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 	// Check if there is a similiar pattern (similarity >= 90%) in the database
 	for k := range data {
 		if CalculateSimilarity(pattern, k) >= 90 {
-			fmt.Println("Masuk 90")
+			// fmt.Println("Masuk 90")
 			result = append(result, k)
 			resultSimilarity = append(resultSimilarity, int(CalculateSimilarity(pattern, k)))
 		}
@@ -78,7 +78,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 		return result, false
 	}
 	// If there is nothing else, pick 3 questions with the highest similarity
-	fmt.Println("Masuk tidak ditemukan")
+	// fmt.Println("Masuk tidak ditemukan")
 	for k := range data {
 		result = append(result, k)
 		resultSimilarity = append(resultSimilarity, int(CalculateSimilarity(pattern, k)))
@@ -140,7 +140,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 		found := false
 		for k := range data {
 			if checkExactPattern(extractedPattern[0], k, stringMatchingAlgo) {
-				answer.WriteString("Pertanyaan ada di database")
+				answer.WriteString("Pertanyaan sudah ada di database\n")
 				found = true
 			}
 			if found {
@@ -149,7 +149,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 			}
 		}
 		if !found {
-			answer.WriteString("Pertanyaan belum ada di database")
+			answer.WriteString("Pertanyaan belum ada di database\n")
 			answer.WriteString("Pertanyaan ditambah ke database")
 		}
 		var question models.Query
@@ -160,7 +160,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 		found := false
 		for k := range data {
 			if checkExactPattern(extractedPattern[0], k, stringMatchingAlgo) {
-				answer.WriteString("Pertanyaan ada di database\n")
+				answer.WriteString("Pertanyaan sudah ada di database\n")
 				answer.WriteString("Pertanyaan dihapus dari database")
 				found = true
 				break
@@ -207,7 +207,7 @@ func addQuestion(add models.Query) {
 		fmt.Println(string(body))
 		return
 	} else {
-		fmt.Println("Pertanyaan berhasil ditambahkan")
+		// fmt.Println("Pertanyaan berhasil ditambahkan")
 	}
 }
 
@@ -249,6 +249,6 @@ func deleteQuestion(question models.Query) {
 		fmt.Println(string(body))
 		return
 	} else {
-		fmt.Println("Pertanyaan berhasil dihapus")
+		// fmt.Println("Pertanyaan berhasil dihapus")
 	}
 }
