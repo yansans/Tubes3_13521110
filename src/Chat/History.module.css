@@ -1,6 +1,6 @@
 .HistoryContainer {
     border-right: 1px solid #dfdfdf;
-    width: 340px;
+    width: auto;
     background-color: #202123;
 }
 .HistoryLog {
@@ -23,7 +23,7 @@
     margin-left: 10px;
     font-size: 15px;
     padding-right: 10px;
-    width: 180px;
+    width: 50%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
