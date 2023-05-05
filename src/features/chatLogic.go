@@ -1,9 +1,17 @@
 package features
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"strconv"
 	"strings"
+	"time"
+
+	"github.com/yansans/Tubes3_13521110/src/models"
 )
 
 func sortSimilarity(result *[]string, resultSimilarity *[]int) {
@@ -69,7 +77,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 	return result
 }
 
-func ChatLogic(question string, data map[string]string, questionList []string, stringMatchingAlgo string) string {
+func ChatLogic(question string, data map[string]string, stringMatchingAlgo string) string {
 	var answer strings.Builder
 	extractedPattern := make([]string, 0)
 	feature := WhichFeature(question)
@@ -105,19 +113,118 @@ func ChatLogic(question string, data map[string]string, questionList []string, s
 		answer.WriteString("Hari ")
 		answer.WriteString(CalculateDay(extractedPattern[0]))
 	} else if feature == 4 {
-		for i := 0; i < len(questionList); i++ {
-			if checkExactPattern(extractedPattern[0], questionList[i], stringMatchingAlgo) {
-				return "Pertanyaan ada di database"
+		found := false
+		for k := range data {
+			if checkExactPattern(extractedPattern[0], k, stringMatchingAlgo) {
+				answer.WriteString("Pertanyaan ada di database")
+				found = true
 			}
-			return "Pertanyaan belum ada di database"
+			if found {
+				answer.WriteString("Pertanyaan ditambah ke database")
+				break
+			}
 		}
-	} else {
-		for i := 0; i < len(questionList); i++ {
-			if checkExactPattern(extractedPattern[0], questionList[i], stringMatchingAlgo) {
-				return "Pertanyaan ada di database"
+		if !found {
+			answer.WriteString("Pertanyaan belum ada di database")
+			answer.WriteString("Pertanyaan ditambah ke database")
+		}
+		var question models.Query
+		question.Question = extractedPattern[0]
+		question.Answer = extractedPattern[1]
+		addQuestion(question)
+	} else if feature == 5 {
+		found := false
+		for k := range data {
+			if checkExactPattern(extractedPattern[0], k, stringMatchingAlgo) {
+				answer.WriteString("Pertanyaan ada di database")
+				answer.WriteString("Pertanyaan dihapus dari database")
+				found = true
+				break
 			}
-			return "Pertanyaan belum ada di database"
+		}
+		if found {
+			var question models.Query
+			question.Question = extractedPattern[0]
+			deleteQuestion(question)
+		} else {
+			answer.WriteString("Pertanyaan tidak ada di database")
 		}
 	}
 	return answer.String()
+}
+
+func addQuestion(add models.Query) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	host := "localhost:6969"
+	url := "http://" + host + "/query"
+	data, err := json.Marshal(add)
+	if err != nil {
+		fmt.Println(err)
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, url, bytes.NewBuffer(data))
+	if err != nil {
+		fmt.Println(err)
+	}
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	if res.StatusCode != http.StatusCreated {
+		fmt.Println(res.StatusCode)
+		fmt.Println(string(body))
+		return
+	} else {
+		fmt.Println("Pertanyaan berhasil ditambahkan")
+	}
+}
+
+func deleteQuestion(question models.Query) {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	host := "localhost:6969"
+	url := "http://" + host + "/query"
+	data, err := json.Marshal(question)
+	if err != nil {
+		println("marshal error")
+		fmt.Println(err)
+		return
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodDelete, url, bytes.NewBuffer(data))
+	if err != nil {
+		println("new request error")
+		fmt.Println(err)
+		return
+	}
+	req.Header.Set("Content-Type", "application/json")
+	client := &http.Client{}
+	res, err := client.Do(req)
+	if err != nil {
+		println("client do error")
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		println("read body error")
+		fmt.Println(err)
+		return
+	}
+	if res.StatusCode != http.StatusOK {
+		println("status not ok")
+		fmt.Println(res.StatusCode)
+		fmt.Println(string(body))
+		return
+	} else {
+		fmt.Println("Pertanyaan berhasil dihapus")
+	}
 }

@@ -295,7 +295,7 @@ func AddNewUserMessage(c echo.Context) error {
 	// println(responsesString)
 	// println(algo)
 
-	responsesString := features.ChatLogic(strings.ToLower(message.Message), GetQuestionMap(), GetQuestionList(), message.Algorithm)
+	responsesString := features.ChatLogic(strings.ToLower(message.Message), GetQuestionMap(), message.Algorithm)
 	var botMessage models.NewUserMessage
 	botMessage.Sender = "bot"
 	botMessage.ChatID = message.ChatID

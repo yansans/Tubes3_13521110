@@ -8,9 +8,9 @@ import (
 var pattern2a string = "^hitung\\s*(.*)"
 
 // pattern2b := "\\s*([\\(\\)\\d]+)\\s*([\\+\\-\\*/^]\\s*[\\(\\)\\d]+\\s*)*"
-var pattern3 string = "(\\d{2}/\\d{2}/\\d{0,4})"
-var pattern4 string = ".*tambahkan\\s*pertanyaan\\s*(.+)dengan\\s*jawaban\\s*(.+)"
-var pattern5 string = ".*hapus\\s*pertanyaan\\s*(.+)"
+var pattern3 string = "(\\d{0,2}/\\d{0,2}/\\d{1,})"
+var pattern4 string = ".*tambahkan\\s+pertanyaan\\s+(.+)\\s+dengan\\s+jawaban\\s+(.+)"
+var pattern5 string = ".*hapus\\s+pertanyaan\\s+(.+)"
 
 func WhichFeature(question string) int {
 	regex2a := regexp.MustCompile(pattern2a)
@@ -39,9 +39,8 @@ func ExtractExpressionFour(question string) [2]string {
 
 	match := regex4.FindStringSubmatch(question)
 	if len(match) > 1 {
-		for i := 0; i < len(match); i++ {
-			extracted[i] = match[i]
-		}
+		extracted[0] = match[1]
+		extracted[1] = match[2]
 	}
 	return extracted
 }
