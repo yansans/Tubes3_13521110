@@ -25,7 +25,7 @@ const ChatGPT = () => {
         chatCopy[selectedHistory] = [...chatCopy[selectedHistory], message];
         setChatMessages(chatCopy);
         
-        API.sendMessage(historyID[selectedHistory], message, selectedAlgo).then((botResponse) => {
+        API.sendMessage(historyID[selectedHistory], message, selectedAlgo + selectedExact).then((botResponse) => {
             const chatCopy2 = [...chatCopy];
             chatCopy2[selectedHistory] = [...chatCopy2[selectedHistory], botResponse];
             setChatMessages(chatCopy2);
@@ -68,8 +68,12 @@ const ChatGPT = () => {
 
     // History.tsx algo
     const [selectedAlgo, setSelectedAlgo] : [string, any] = useState("KMP");
-    const handleAlgoChange = (event : React.ChangeEvent<HTMLInputElement>) => {
+    const [selectedExact, setSelectedExact] : [string, any] = useState("");
+    const handleAlgoOptionChange = (event : React.ChangeEvent<HTMLInputElement>) => {
         setSelectedAlgo(event.target.value);
+    };
+    const handleAlgoExactChange = (isExact : boolean) => {
+        setSelectedExact(isExact ? "EXACT" : "");
     };
 
     // API
@@ -91,7 +95,8 @@ const ChatGPT = () => {
             <History 
                 selectedHistory={selectedHistory}
                 history={history}
-                sendAlgoChange={handleAlgoChange}
+                sendAlgoOptionChange={handleAlgoOptionChange}
+                sendAlgoExactChange={handleAlgoExactChange}
                 handleHistoryChange={handleHistoryChange}
                 newHistory={newHistory}
                 deleteHistory={deleteHistory}

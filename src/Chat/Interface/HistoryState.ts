@@ -2,7 +2,8 @@
 interface HistoryState {
     selectedHistory : number;
     history : string[];
-    sendAlgoChange : (event : React.ChangeEvent<HTMLInputElement>) => void;
+    sendAlgoOptionChange : (event : React.ChangeEvent<HTMLInputElement>) => void;
+    sendAlgoExactChange : (isExact : boolean) => void;
     handleHistoryChange : (idx : number) => void;
     newHistory : () => void;
     deleteHistory : () => void;
