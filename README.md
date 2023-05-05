@@ -4,11 +4,10 @@ Implementasi algoritma String Matching dalam program chatGPT sederhana
 
 ## Table of Contents
 
-- [Tubes2\_sebut\_kok\_stu](#tubes2_sebut_kok_stu)
+- [Tubes3\_13521110](#tubes3_13521110)
   - [Table of Contents](#table-of-contents)
-  - [Aplikasi algoritma BFS dan DFS dalam Treasure Hunt Solver](#aplikasi-algoritma-bfs-dan-dfs-dalam-treasure-hunt-solver)
+  - [Aplikasi algoritma String Matching dalam program chatGPT sederhana](#aplikasi-algoritma-string-matching-dalam-program-chatgpt-sederhana)
   - [Requirements](#requirements)
-  - [How to compile](#how-to-compile)
   - [How to run](#how-to-run)
   - [Cara pemakaian program](#cara-pemakaian-program)
   - [Contoh Tampilan Program](#contoh-tampilan-program)
@@ -16,11 +15,7 @@ Implementasi algoritma String Matching dalam program chatGPT sederhana
 
 ## Aplikasi algoritma String Matching dalam program chatGPT sederhana
 
-Implementasi algoritma graph traversal BFS dan DFS untuk menelusuri maze dan mendapatkan rute yang memperoleh semua treasure.
-
-Algoritma BFS akan mencari rute dengan melihat kotak yang bertetangga terlebih dahulu baru kemudian menelusuri yang lain.
-
-Algoritma DFS akan menelusuri satu jalur hingga tidak dapat ditelusuri baru akan menelusuri kotak yang lain.
+Implementasi algoritma KMP (Knuth-Morris-Pratt) dan BM (Boyer-Moore) untuk penentuan string yang exact match dari pertanyaan database sebagai jawaban dari aplikasi. Selain itu, implementasi Algoritma Levenshtein Distance untuk aproksimasi kemiripan string berguna dalam pembuatan ChatBot yang semi-intelligent. Terdapat pula fitur kalkulator dan penyebut hari di aplikasi tersebut.
 
 ## Requirements
 
@@ -130,24 +125,31 @@ Program dapat dijalankan dengan langkah sebagai berikut
 ## Contoh Tampilan Program
 
 1. Tampilan saat program pertama kali dibuka
+
     ![firstScreen](img/firstScreen.png)
 
 2. Tampilan saat mengubah nama Chat Log
+
     ![renameChat](img/renameChat.png)
 
 3. Tampilan saat bertanya kepada chatbot
+
     ![askBot](img/askBot.png)
 
 4. Tampilan saat menambah pertanyaan kedalam database
+
     ![addQuestion](img/addQuestion.png)
 
 5. Tampilan saat menghapus pertanyaan dari database
+
     ![deleteQuestion](img/deleteQuestion.png)
 
 6. Tampilan saat bertanya hasil operasi matematika
+
     ![askMath](img/askMath.png)
 
 7. Tampilan saat bertanya nama hari
+
     ![askDay](img/askDay.png)
 
 ## Project Status
