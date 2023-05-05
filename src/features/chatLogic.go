@@ -69,7 +69,7 @@ func stringMatchingLogic(pattern string, data map[string]string, stringMatchingA
 	return result
 }
 
-func ChatLogic(question string, data map[string]string, stringMatchingAlgo string) string {
+func ChatLogic(question string, data map[string]string, questionList []string, stringMatchingAlgo string) string {
 	var answer strings.Builder
 	extractedPattern := make([]string, 0)
 	feature := WhichFeature(question)
@@ -105,9 +105,19 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 		answer.WriteString("Hari ")
 		answer.WriteString(CalculateDay(extractedPattern[0]))
 	} else if feature == 4 {
-
+		for i := 0; i < len(questionList); i++ {
+			if checkExactPattern(extractedPattern[0], questionList[i], stringMatchingAlgo) {
+				return "Pertanyaan ada di database"
+			}
+			return "Pertanyaan belum ada di database"
+		}
 	} else {
-
+		for i := 0; i < len(questionList); i++ {
+			if checkExactPattern(extractedPattern[0], questionList[i], stringMatchingAlgo) {
+				return "Pertanyaan ada di database"
+			}
+			return "Pertanyaan belum ada di database"
+		}
 	}
 	return answer.String()
 }
