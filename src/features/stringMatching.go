@@ -23,6 +23,10 @@ func generateLPS(pattern string) []int {
 }
 
 func Kmp(pattern string, text string) []int {
+	empty := make([]int, 0)
+	if len(pattern) == 0 {
+		return empty
+	}
 	// Main KMP Algorithm
 	lps := generateLPS(pattern)
 	i := 0
@@ -41,11 +45,11 @@ func Kmp(pattern string, text string) []int {
 		}
 
 		if j == len(pattern)-1 {
-			break
+			return generateMatchedIdx(pattern, text, i-1)
 		}
 	}
 
-	return generateMatchedIdx(pattern, text, i-1)
+	return empty
 }
 
 func generateBMT(pattern string) map[byte]int {
@@ -77,6 +81,10 @@ func bmMatchPattern(pattern string, text string, k *int) bool {
 }
 
 func BoyerMoore(pattern string, text string) []int {
+	empty := make([]int, 0)
+	if len(pattern) == 0 {
+		return empty
+	}
 	// Main Boyer-Moore Algorithm
 	bmt := generateBMT(pattern)
 	i := len(pattern) - 1
@@ -97,6 +105,10 @@ func BoyerMoore(pattern string, text string) []int {
 			i += bmt[star]
 		}
 	}
+	if i == len(text) {
+		return empty
+	}
+
 	return generateMatchedIdx(pattern, text, i)
 }
 
@@ -158,45 +170,47 @@ func CalculateSimilarity(pattern string, text string) float64 {
 
 // Driver
 func StringMatchingDriver() {
-	var hello string = "hello, World!"
-	lps := make([]int, len(hello))
-	fmt.Println(hello[12:13])
-	fmt.Println(len(hello))
-	fmt.Println(lps)
-	fmt.Println()
+	// var hello string = "hello, World!"
+	// lps := make([]int, len(hello))
+	// fmt.Println(hello[12:13])
+	// fmt.Println(len(hello))
+	// fmt.Println(lps)
+	// fmt.Println()
 
-	fmt.Println("LPS-test:")
-	fmt.Println(generateLPS("abcdabeabf"))
-	fmt.Println(generateLPS("abcdeabfabc"))
-	fmt.Println(generateLPS("aabcadaabe"))
-	fmt.Println(generateLPS("aaaabaacd"))
-	fmt.Println()
+	// fmt.Println("LPS-test:")
+	// fmt.Println(generateLPS("abcdabeabf"))
+	// fmt.Println(generateLPS("abcdeabfabc"))
+	// fmt.Println(generateLPS("aabcadaabe"))
+	// fmt.Println(generateLPS("aaaabaacd"))
+	// fmt.Println()
 
-	fmt.Println("KMP-test:")
-	fmt.Println(Kmp("ababd", "ababcabcabababd"))
-	fmt.Println(Kmp("aaab", "aaaaaaab"))
-	fmt.Println(Kmp("BAB", "ABABABAC"))
-	fmt.Println(Kmp("TEST", "THIS IS A TEST"))
-	fmt.Println()
+	// fmt.Println("KMP-test:")
+	// fmt.Println(Kmp("ababd", "ababcabcabababd"))
+	// fmt.Println(Kmp("", "aaaaaaab"))
+	// fmt.Println(Kmp("CCC", "ABABABAC"))
+	// fmt.Println(Kmp("TEST", "THIS IS A TEST"))
+	// fmt.Println(Kmp("ibu", "Apa ibukota Indonesia?"))
+	// fmt.Println()
 
-	fmt.Println("BM-test:")
-	fmt.Println(BoyerMoore("ababd", "ababcabcabababd"))
-	fmt.Println(BoyerMoore("aaab", "aaaaaaab"))
-	fmt.Println(BoyerMoore("BAB", "ABABABAC"))
-	fmt.Println(BoyerMoore("TEST", "THIS IS A TEST"))
-	fmt.Println()
+	// // fmt.Println("BM-test:")
+	// fmt.Println(BoyerMoore("ababd", "ababcabcabababd"))
+	// fmt.Println(BoyerMoore("", "aaaaaaab"))
+	// fmt.Println(BoyerMoore("ACC", "ABABABAC"))
+	// fmt.Println(BoyerMoore("TEST", "THIS IS A TEST"))
+	// fmt.Println(BoyerMoore("something", "Apa ibukota Indonesia?"))
+	// fmt.Println()
 
 	fmt.Println("Levensthein Distance-test:")
-	s1 := "kitten"
-	t1 := "sitting"
+	s1 := "a"
+	t1 := "apa mata kuliah IF semester 4 yang paling seru?"
 	dist1 := levenstheinDistance(s1, t1)
 	fmt.Printf("Levenshtein distance between %q and %q is %d.\n", s1, t1, dist1)
 	s2 := "book"
-	t2 := "back"
+	t2 := "book1"
 	dist2 := levenstheinDistance(s2, t2)
 	fmt.Printf("Levenshtein distance between %q and %q is %d.\n", s2, t2, dist2)
-	s3 := "penrose"
-	t3 := "rose"
+	s3 := "book1"
+	t3 := "book"
 	dist3 := levenstheinDistance(s3, t3)
 	fmt.Printf("Levenshtein distance between %q and %q is %d.\n", s3, t3, dist3)
 	s4 := "Something that matters"

@@ -6,9 +6,11 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/yansans/Tubes3_13521110/src/features"
 	"github.com/yansans/Tubes3_13521110/src/models"
 	"github.com/yansans/Tubes3_13521110/src/responses"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -293,10 +295,11 @@ func AddNewUserMessage(c echo.Context) error {
 	// println(responsesString)
 	// println(algo)
 
+	responsesString := features.ChatLogic(strings.ToLower(message.Message), GetQuestionMap(), message.Algorithm)
 	var botMessage models.NewUserMessage
 	botMessage.Sender = "bot"
 	botMessage.ChatID = message.ChatID
-	botMessage.Message = "responsesString"
+	botMessage.Message = responsesString
 	botMessageData, err := json.Marshal(botMessage)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "bot marshal", Data: &echo.Map{"data": err.Error()}})

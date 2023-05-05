@@ -3,6 +3,7 @@ package controllers
 import (
 	"context"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -176,7 +177,7 @@ func GetQuestionList() []string {
 			return nil
 		}
 
-		questions = append(questions, singleQuery.Question)
+		questions = append(questions, strings.ToLower(singleQuery.Question))
 	}
 
 	return questions
@@ -201,7 +202,7 @@ func GetQuestionMap() map[string]string {
 			return nil
 		}
 
-		questions[singleQuery.Question] = singleQuery.Answer
+		questions[strings.ToLower(singleQuery.Question)] = singleQuery.Answer
 	}
 
 	return questions
