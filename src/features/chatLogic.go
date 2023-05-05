@@ -101,7 +101,7 @@ func ChatLogic(question string, data map[string]string, stringMatchingAlgo strin
 
 	if feature == 1 {
 		matchedString, notFound := stringMatchingLogic(question, data, stringMatchingAlgo)
-		if !notFound {
+		if notFound {
 			answer.WriteString("Pertanyaan tidak ditemukan di database. Apakah maksud Anda:\n")
 			for i := 0; i < len(matchedString); i++ {
 				if i == 3 {
